@@ -1,28 +1,29 @@
 import React  from "react"
+import Quiz from './components/Quiz'
 
 export default function App() {
   const [gameStarted, setGameStarted] = React.useState(false)
+  const [quizData, setQuizData] = React.useState(null)
+
+  React.useEffect(()=> {
+      fetch('https://opentdb.com/api.php?amount=5&type=multiple')
+        .then(res => res.json())
+        .then(data => setQuizData(data.results))
+        .catch(error => console.error("Error fetching quiz data", error))
+  }, [])
+  
+  console.log(quizData)
 
   function startGame() {
     setGameStarted(true)
-    console.log(gameStarted)
   }
 
   return (
     <div>
       {gameStarted ? (
-        <>
-        <div className="quiz-container">
-          <h2 className="question-title">how would one say goodby in spanish?</h2>
-          <div className="answer-container">
-            <p className="answers">Aidos</p>
-            <p className="answers">Hola</p>
-            <p className="answers">Au Revoir</p>
-            <p className="answers">Salir</p>
-          </div>
-        </div>
-        <button className="check-answer-btn">Check answers</button>
-        </>
+        <Quiz
+          data={quizData}
+        />
       ) : (
       <div className="app-title-container">
         <h1 className="app-title">Quizzical</h1>
