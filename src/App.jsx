@@ -11,8 +11,6 @@ export default function App() {
         .then(data => setQuizData(data.results))
         .catch(error => console.error("Error fetching quiz data", error))
   }, [])
-  
-  console.log(quizData)
 
   function startGame() {
     setGameStarted(true)
@@ -26,8 +24,10 @@ export default function App() {
         />
       ) : (
       <div className="app-title-container">
-        <h1 className="app-title">Quizzical</h1>
-        <h2 className="app-subtitle">Test Your Knowledge, One Fun Fact at a Time!</h2>
+        <div className="app-title-subcontainer">
+          <h1 className="app-title">Quizzical</h1>
+          <h2 className="app-subtitle">Test Your Knowledge, One Fun Fact at a Time!</h2>
+        </div>
         <button className="start-btn" onClick={startGame}>Start Quiz</button>
       </div>
       )}

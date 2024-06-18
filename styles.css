@@ -7,6 +7,24 @@ body{
     padding: 0;
     font-family: "Outfit", sans-serif;
     text-align: center;
+    width: 100vw;
+    height: 100vh;
+    color: #f5f7fb;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1.5);
+    --s: 50px; /* control the size*/
+    --c1: #2d545e;
+    --c2: #ffb382;
+    
+    --c:calc(50%/3),#0000 75%,var(--c1) 0;
+    --g:conic-gradient(at 50% var(--c));
+    --l:conic-gradient(at var(--c));
+    background:
+        var(--g),
+        var(--g) calc(var(--s)/2) var(--s),
+        var(--g) var(--s) calc(2*var(--s)),
+        var(--l) calc(2*var(--s)) 0,
+        var(--l) 0 var(--s) var(--c2);
+    background-size: calc(3*var(--s)) calc(3*var(--s));
 }
 
 /*Sand Tan: #e1b382
@@ -24,11 +42,18 @@ Night Blue Shadow: #12343b */
     align-items: center;
     justify-content: center;
     height: 100vh;
+    
 }
 
 .app-title{
     font-size: 3rem;
     margin-bottom: 0;
+}
+.app-title-subcontainer{
+    background-color: rgba(18, 52, 59, 0.9);
+    border-radius: 10px;
+    margin-bottom: 0.5em;
+    padding: 0 1.25em;
 }
 
 .app-subtitle,
@@ -41,12 +66,13 @@ Night Blue Shadow: #12343b */
     margin-bottom: 2.5em;
 }
 
-.start-btn{
+.start-btn,
+.check-answer-btn{
     padding: 1.25em 4em;
     border-radius: 15px;
     font-weight: bold;
-    background-color: #4d5b9e;
-    color: #f5f7fb;
+    background-color: #f5f7fb; /* Rich Purple */
+    color: #12343b;
     border: none;
     cursor: pointer;
 }
@@ -58,8 +84,9 @@ Night Blue Shadow: #12343b */
     border-bottom: 1px solid #dbdef0;
     display: block;
     width: 70%;
-    margin: 0 auto 1.5em;
-    padding-bottom: 1em;
+    margin: 1em auto;
+    padding: 1em 1.5em;
+    background-color: rgba(18, 52, 59, 0.9);
 }
 .question-title{
     font-size: 1.5rem;
@@ -80,12 +107,39 @@ Night Blue Shadow: #12343b */
     cursor: pointer;
 }
 
+.answers.selected {
+    background-color: #c8966c;
+    border-color: #c89666;
+}
+
+.answers.correct,
+.answers.incorrect {
+    color: black;
+    text-shadow: none;
+}
+
+.answers.correct {
+    background-color: #94d7a2;
+}
+
+.answers.incorrect {
+    background-color: #f8bcbc;
+}
+
+.score {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background-color: rgba(18, 52, 59, 0.9);
+    width: 50%;
+    margin: 0 auto 0.5em;
+    padding: 1em;
+}
+
 .check-answer-btn{
-    padding: 1em 1.5em;
-    border-radius: 10px;
-    background-color: #4d5b9e;
-    color: #f5f7fb;
     cursor: pointer;
     border: none;
+    margin-bottom: 2em;
+    font-size: 1.2rem;
 }
 

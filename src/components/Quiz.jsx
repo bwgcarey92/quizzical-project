@@ -1,36 +1,102 @@
 import React from 'react'
 import he from 'he'
 import {nanoid} from 'nanoid'
+
+
 export default function Quiz(props){
+    const [quizData, setQuizData] = React.useState([])
+    const [score, setScore] = React.useState(0)
+    const [buttonActive, setButtonActive] = React.useState(false)
 
-    const dataArr = props.data.map(arr => {
-        console.log(arr)
-        const answerArr = []
-        const incorrectAnswers = arr.incorrect_answers.map(answer => answerArr.push(answer))
-        answerArr.push(arr.correct_answer)
-
-        function shuffle(arr) {
-            let currentIndex = arr.length
-
-            while (currentIndex != 0) {
-
-                let randomIndex = Math.floor(Math.random() * currentIndex)
-                currentIndex--
-
-                [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
-            }
+    React.useEffect(()=> {
+        if (props.data) {
+            const formattedData = props.data.map(arr => {
+                const answers = [...arr.incorrect_answers, arr.correct_answer]
+                shuffle(answers)
+                return {
+                    question: arr.question,
+                    answers: answers,
+                    correctAnswer: arr.correct_answer,
+                    selectedAnswer: null,
+                    isCorrect: null
+                }
+            })
+            setQuizData(formattedData)
         }
-        shuffle(answerArr)
-        
-        console.log(answerArr)
+    }, [props.data])
+
+    function shuffle(arr) {
+        let currentIndex = arr.length
+
+        while (currentIndex !== 0) {
+
+            const randomIndex = Math.floor(Math.random() * currentIndex)
+            currentIndex--
+
+            [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
+        }
+    }
+
+    function handleAnswerClick(questionIndex, answer) {
+        if (!buttonActive) {
+            setQuizData(prev => {
+                const updatedQuizData = [...prev]
+                updatedQuizData[questionIndex].selectedAnswer = answer
+                return updatedQuizData
+            })
+        }
+    }
+
+    function checkAnswers() {
+        setButtonActive(true)
+        setQuizData(prev => {
+            const answeredQuizData = prev.map(question => {
+                const isCorrect = question.selectedAnswer === question.correctAnswer
+                return {
+                    ...question,
+                    isCorrect: isCorrect
+                }
+            })
+            const correctAnswerCount = answeredQuizData.filter(question => question.isCorrect).length
+            setScore(correctAnswerCount)
+            return answeredQuizData
+        })
+    }
+
+    const allQuestionsAnswered = quizData.every(question => question.selectedAnswer !== null)
+
+    const renderedQuestions = quizData.map((questionObj, index) => {
         return (
             <div key={nanoid()} className="quiz-container">
-            <h2 className="question-title">{he.decode(arr.question)}</h2>
-            <div className="answer-container">
-              <p className="answers">{he.decode(answerArr[0])}</p>
-              <p className="answers">{he.decode(answerArr[1])}</p>
-              <p className="answers">{he.decode(answerArr[2])}</p>
-              <p className="answers">{he.decode(answerArr[3])}r</p>
+                <h2 className="question-title">{he.decode(questionObj.question)}</h2>
+                <div className="answer-container">
+                {questionObj.answers.map(answer => {
+                    const decodedAnswer = he.decode(answer)
+                    const isSelected = questionObj.selectedAnswer === decodedAnswer
+                    let answerClass = 'answers'
+
+                    if (questionObj.isCorrect !== null) {
+                        if (decodedAnswer === questionObj.correctAnswer) {
+                            answerClass += ' correct'
+                        } else if (isSelected && decodedAnswer !== questionObj.correctAnswer) {
+                            answerClass += ' incorrect'
+                        }
+                    } else if (isSelected) {
+                        answerClass += ' selected'
+                    }
+
+                    return (
+                        <p
+                            key={nanoid()}
+                            className={answerClass}
+                            onClick={()=> {
+                                return handleAnswerClick(index, decodedAnswer)
+                            }}
+                        >
+                            {decodedAnswer}
+                        </p>
+                    )
+                })}
             </div>
           </div>
         )
@@ -38,8 +104,13 @@ export default function Quiz(props){
 
     return (
         <>
-        {dataArr}
-        <button className="check-answer-btn">Check answers</button>
+            {renderedQuestions}
+            {buttonActive ? <p className='score'>You got {score} out of {quizData.length} correct!</p> : null}   
+            <button 
+                className="check-answer-btn"
+                onClick={checkAnswers}
+            >
+                Check answers</button> 
         </>
     )
 }
