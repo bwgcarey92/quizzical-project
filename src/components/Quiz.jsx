@@ -22,6 +22,7 @@ export default function Quiz(props){
                 }
             })
             setQuizData(formattedData)
+            console.log(quizData)
         }
     }, [props.data])
 

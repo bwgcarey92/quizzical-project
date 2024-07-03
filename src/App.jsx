@@ -17,6 +17,7 @@ export default function App() {
 
   function startGame() {
     setGameStarted(true)
+    console.log("hello")
   }
 
   return (
