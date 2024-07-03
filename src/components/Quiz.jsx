@@ -4,7 +4,7 @@ import {nanoid} from 'nanoid'
 
 
 export default function Quiz(props){
-    const [quizData, setQuizData] = React.useState([])
+    const [newQuizData, setNewQuizData] = React.useState([])
     const [score, setScore] = React.useState(0)
     const [buttonActive, setButtonActive] = React.useState(false)
 
@@ -21,8 +21,8 @@ export default function Quiz(props){
                     isCorrect: null
                 }
             })
-            setQuizData(formattedData)
-            console.log(quizData)
+            setNewQuizData(formattedData)
+            console.log(newQuizData)
         }
     }, [props.data])
 
@@ -40,7 +40,7 @@ export default function Quiz(props){
 
     function handleAnswerClick(questionIndex, answer) {
         if (!buttonActive) {
-            setQuizData(prev => {
+            setNewQuizData(prev => {
                 const updatedQuizData = [...prev]
                 updatedQuizData[questionIndex].selectedAnswer = answer
                 return updatedQuizData
@@ -50,7 +50,7 @@ export default function Quiz(props){
 
     function checkAnswers() {
         setButtonActive(true)
-        setQuizData(prev => {
+        setNewQuizData(prev => {
             const answeredQuizData = prev.map(question => {
                 const isCorrect = question.selectedAnswer === question.correctAnswer
                 return {
@@ -64,9 +64,9 @@ export default function Quiz(props){
         })
     }
 
-    const allQuestionsAnswered = quizData.every(question => question.selectedAnswer !== null)
+    const allQuestionsAnswered = newQuizData.every(question => question.selectedAnswer !== null)
 
-    const renderedQuestions = quizData.map((questionObj, index) => {
+    const renderedQuestions = newQuizData.map((questionObj, index) => {
         return (
             <div key={nanoid()} className="quiz-container">
                 <h2 className="question-title">{he.decode(questionObj.question)}</h2>
@@ -106,7 +106,7 @@ export default function Quiz(props){
     return (
         <>
             {renderedQuestions}
-            {buttonActive ? <p className='score'>You got {score} out of {quizData.length} correct!</p> : null}   
+            {buttonActive ? <p className='score'>You got {score} out of {newQuizData.length} correct!</p> : null}   
             <button 
                 className="check-answer-btn"
                 onClick={checkAnswers}
