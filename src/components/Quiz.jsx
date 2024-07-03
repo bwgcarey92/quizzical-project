@@ -11,8 +11,7 @@ export default function Quiz(props){
     React.useEffect(()=> {
         if (props.data) {
             const formattedData = props.data.map(arr => {
-                const answers = [...arr.incorrect_answers, arr.correct_answer]
-                shuffle(answers)
+                const answers = shuffle([...arr.incorrect_answers, arr.correct_answer])
                 return {
                     question: arr.question,
                     answers: answers,
@@ -26,18 +25,15 @@ export default function Quiz(props){
         }
     }, [props.data])
 
-    function shuffle(arr) {
-        let currentIndex = arr.length
-
-        while (currentIndex !== 0) {
-
-            const randomIndex = Math.floor(Math.random() * currentIndex)
-            currentIndex--
-
-            [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
+    function shuffle(array) {
+        let shuffledArray = array.slice(); // Create a copy of the array
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
         }
-        return arr
-    }
+        return shuffledArray;
+      }
+      
 
     function handleAnswerClick(questionIndex, answer) {
         if (!buttonActive) {
