@@ -36,6 +36,7 @@ export default function Quiz(props){
 
             [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
         }
+        return arr
     }
 
     function handleAnswerClick(questionIndex, answer) {
