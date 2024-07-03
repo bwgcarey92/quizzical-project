@@ -82,7 +82,8 @@ Night Blue Shadow: #12343b */
 
 .quiz-container{
     border-bottom: 1px solid #dbdef0;
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: 70%;
     margin: 1em auto;
     padding: 1em 1.5em;
@@ -94,17 +95,18 @@ Night Blue Shadow: #12343b */
     text-align: start;
 }
 .answer-container{
-    display: flex;
+    display: inline-block;
+    width: 100%;
     justify-content: space-evenly;
 }
 .answers{
-    font-size: 1rem;
     border: 1px solid;
     padding: 5px 15px;
     font-weight: 500;
-    margin-right: 1em;
     border-radius: 8px;
     cursor: pointer;
+    width: 50%;
+    margin: 0.5em auto;
 }
 
 .answers.selected {
