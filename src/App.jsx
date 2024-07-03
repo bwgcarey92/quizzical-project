@@ -8,7 +8,10 @@ export default function App() {
   React.useEffect(()=> {
       fetch('https://opentdb.com/api.php?amount=5&type=multiple')
         .then(res => res.json())
-        .then(data => setQuizData(data.results))
+        .then(data => {
+          console.log(data)
+          setQuizData(data.results)
+        })
         .catch(error => console.error("Error fetching quiz data", error))
   }, [])
 
